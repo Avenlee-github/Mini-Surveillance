@@ -1,0 +1,13 @@
+# unnecessary files
+venv/
+__pycache__/
+utils/__pycache__/
+config.yaml
+__init__.py
+
+# output images and videos
+recordings/*
+img_out/*
+
+# running logs
+running_log.log

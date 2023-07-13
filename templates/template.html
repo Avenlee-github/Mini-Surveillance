@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mini Surveillance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+      function handleCaptureButtonClick() {
+        fetch("/capture", { method: "POST" })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            alert("拍照已完成！");
+          })
+          .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
+          });
+      }
+
+      function handleLoginFormSubmit(event) {
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const auth = "Basic " + btoa(username + ":" + password);
+
+        fetch("/test_auth", {
+          method: "GET",
+          headers: { Authorization: auth },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Authentication failed");
+            }
+            console.log("Authentication success");
+            sessionStorage.setItem("auth", auth);
+            document.getElementById("login-area").style.display = "none";
+            document.body.style.justifyContent = "center";
+            document.getElementById("video-area").style.display = "block";
+          })
+          .catch((error) => {
+            console.error("Authentication error:", error);
+            alert("Invalid username or password.");
+          });
+      }
+
+      function handleRecordButtonClick() {
+        const recordButton = document.getElementById("record-button");
+        if (recordButton.textContent === "Record") {
+          fetch("/start_recording", { method: "POST" });
+          recordButton.textContent = "Recording";
+          recordButton.classList.add("recording");
+        } else {
+          fetch("/stop_recording", { method: "POST" });
+          recordButton.textContent = "Record";
+          recordButton.classList.remove("recording");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("capture").addEventListener("click", handleCaptureButtonClick);
+        document.getElementById("login-form").addEventListener("submit", handleLoginFormSubmit);
+        document.getElementById("record-button").addEventListener("click", handleRecordButtonClick);
+      });
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Roboto', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f5f5f5;
+      }
+      img {
+        max-width: 90%;
+        border: 2px solid #333;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      button {
+        font-size: 18px;
+        font-weight: 500;
+        background-color: #3f51b5;
+        color: #fff;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #283593;
+      }
+      #video-area {
+        display: none;
+      }
+      .video-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 400px;
+        margin-top: 20px;
+      }
+      .recording {
+        background-color: #f44336;
+      }
+      .recording:hover {
+        background-color: #d32f2f;
+      }
+      @media screen and (max-width: 768px) {
+        body {
+          padding: 20px;
+        }
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="login-area">
+      <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <div id="video-area">
+      <div class="video-container">
+        <img src="{{ url_for('video_feed') }}" alt="Video Feed">
+        <div class="button-container">
+          <button id="capture">Capture</button>
+          <button id="record-button">Record</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

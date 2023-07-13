@@ -1,0 +1,12 @@
+# 验证配置
+authentication:
+  username: your_username
+  password: your_password
+
+# 邮件配置
+email:
+  sender_email: sender_mail@server.com
+  sender_password: sender_password
+  receiver_email: receiver_mail@server.com
+  smtp_server: smtp.your_server.com
+  port: 25
