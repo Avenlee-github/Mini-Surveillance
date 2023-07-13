@@ -8,7 +8,7 @@
 - 克隆项目后通过以下命令安装依赖：
 ```cmd
 cd your_path/MiniSurveillance
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ## 准备工作
