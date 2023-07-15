@@ -7,9 +7,19 @@ import os
 import numpy as np
 import uuid
 import logging
+import yaml
 from utils.email_smtp import send_email, send_video
 import threading
 from utils.auth import check_auth, authenticate, requires_auth
+
+# 读取config.yaml文件
+with open('config.yaml', 'r', encoding="utf-8") as file:
+    config = yaml.safe_load(file)
+
+video_config = config['video']
+fps = float(video_config['fps'])
+motion_threshold = int(video_config['motion_threshold'])
+output_port = int(video_config['port'])
 
 # 错误记录
 logging.basicConfig(filename='running_log.log',
@@ -26,7 +36,7 @@ class VideoCamera(object):
         self.detected_faces = set()  # 用于记录已检测到的人脸
         self.last_email_time = 0  # 上次发送邮件的时间戳
         self.bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=16, detectShadows=False) # 背景减除器
-        self.motion_threshold = 5000 # 动作识别阈值，数值越大，需要激活人脸识别的动作就越大
+        self.motion_threshold = motion_threshold # 动作识别阈值，数值越大，需要激活人脸识别的动作就越大
         self.current_frame = None
         self.running = True
         # 以下为录像功能代码
@@ -182,7 +192,7 @@ def gen(camera):
     while True:
         try:
             frame = camera.get_frame()
-            time.sleep(0.1) # 这里设置休眠时间，设置合适时长，确保视频流不间断
+            time.sleep(np.round(1/fps, 3)) # 这里设置休眠时间，设置合适时长，确保视频流不间断
 
             # 使用generator函数输出视频流，每次请求输出的content类型是image/jpeg
             yield (b'--frame\r\n'
@@ -230,6 +240,6 @@ def stop_recording():
 if __name__ == '__main__':
     camera.start()
     try:
-        app.run(host='0.0.0.0', debug=False, port=5000)
+        app.run(host='0.0.0.0', debug=False, port=output_port)
     except KeyboardInterrupt:
         camera.stop()

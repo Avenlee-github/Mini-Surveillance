@@ -10,3 +10,9 @@ email:
   receiver_email: receiver_mail@server.com
   smtp_server: smtp.your_server.com
   port: 25
+
+# 视频流设置
+video:
+  fps: 10 # 每秒帧数，但是受限于机器性能，不一定能达到设置帧率
+  motion_threshold: 5000 # 动作识别阈值，数值越大，需要激活人脸识别的动作就越大
+  port: 5000 # 视频流映射端口

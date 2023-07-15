@@ -16,6 +16,7 @@ pip install -r requirements.txt
 - 配置文件：首先准备好配置文件(这是必备操作，否则项目无法正常运行)，删除根目录下的<font color=#FFFF00>***"config.yaml.example"***</font>的.example后缀，改为<font color=#FFFF00>***"config.yaml"***</font>文件；
 - 实现用户认证登录：该项目支持用户认证登录后查看监控视频，通过设置<font color=#FFFF00>***"config.yaml"***</font>配置文件中authentication模块下的username和password参数即可达成。如果不设置以上参数则默认用户名为<font color=#FFFF00>***"your_username"***</font>，默认密码为<font color=#FFFF00>***"your_password"***</font>；
 - 实现邮件发送功能：通过设置<font color=#FFFF00>***"config.yaml"***</font>配置文件中email模块的sender_email, sender_password, receiver_email, smtp_server和port参数即可实现邮件提醒功能。注意如果你使用的运营商提供的邮箱服务，其中的sender_password不是你设置的登录密码，而是SMTP授权密码，需要到运营商邮箱官方网站申请开通。如果不设置相关参数，对应照片和视频仍然可以保存到本地路径中，但是不会发送邮件提醒；
+- 视频配置：在<font color=#FFFF00>***"config.yaml"***</font>文件中包括视频帧率、动作识别阈值和视频流映射端口的相关设置，可以使用默认设置，也可根据自身情况调整；
 - 确保人脸检测模型文件（<font color=#FFFF00>***"haarcascade_frontalface_alt.xml"***</font>）在项目根目录下；
 
 ## 运行
