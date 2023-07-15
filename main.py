@@ -175,7 +175,7 @@ camera = VideoCamera()
 
 @app.route('/')  # 主页
 def index():
-    # jinja2模板，具体格式保存在index.html文件中
+    # jinja2模板，具体格式保存在template.html文件中
     return render_template('template.html')
 
 def gen(camera):
