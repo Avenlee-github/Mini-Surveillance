@@ -3,7 +3,7 @@ from flask import Flask, request, Response
 import yaml
 
 # 读取config.yaml文件
-with open('config.yaml', 'r') as file:
+with open('config.yaml', 'r', encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
 authentication = config['authentication']

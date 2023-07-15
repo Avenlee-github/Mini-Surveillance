@@ -7,7 +7,7 @@ __init__.py
 
 # output images and videos
 recordings/*
-img_out/*
+photos/*
 
 # running logs
 running_log.log

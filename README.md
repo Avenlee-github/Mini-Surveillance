@@ -7,6 +7,7 @@
 - 首先确保安装好了python3
 - 克隆项目后通过以下命令安装依赖：
 ```cmd
+git clone https://github.com/Avenlee-github/Mini-Surveillance.git
 cd your_path/MiniSurveillance
 pip install -r requirements.txt
 ```
